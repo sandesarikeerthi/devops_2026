@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduLabor — Labor & Quality Education Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1108;
+    --cream: #f5f0e8;
+    --warm: #e8dcc8;
+    --gold: #c9933a;
+    --gold-light: #e8b96a;
+    --rust: #8b3a1a;
+    --sage: #4a6741;
+    --slate: #3a4a5c;
+    --muted: #7a6e62;
+    --surface: #fdfaf5;
+    --border: #d4c8b4;
+    --red: #c0392b;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── PAGE SYSTEM ── */
+  .page { display: none; min-height: 100vh; }
+  .page.active { display: flex; }
+
+  /* ═══════════════════════════
+     LOGIN PAGE
+  ═══════════════════════════ */
+  #login-page {
+    flex-direction: row;
+  }
+
+  /* Left panel — decorative */
+  .login-left {
+    width: 48%;
+    background: var(--ink);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 52px 48px;
+  }
+
+  .login-left::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 59px, #ffffff08 60px),
+      repeating-linear-gradient(90deg, transparent, transparent 59px, #ffffff08 60px);
+  }
+
+  .login-left::after {
+    content: '';
+    position: absolute;
+    top: -120px; right: -120px;
+    width: 480px; height: 480px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #c9933a22 0%, transparent 70%);
+  }
+
+  .brand-mark {
+    position: relative;
+    z-index: 2;
+  }
+
+  .brand-mark .logo-symbol {
+    width: 52px; height: 52px;
+    border: 2px solid var(--gold);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--gold);
+    margin-bottom: 18px;
+    font-weight: 700;
+  }
+
+  .brand-mark h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    color: var(--cream);
+    line-height: 1.15;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+  }
+
+  .brand-mark h1 em {
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  .brand-mark p {
+    margin-top: 14px;
+    font-size: 13px;
+    color: #a09080;
+    line-height: 1.6;
+    font-weight: 300;
+    max-width: 320px;
+  }
+
+  .paper-cite {
+    position: relative; z-index: 2;
+    background: #ffffff0a;
+    border: 1px solid #ffffff14;
+    border-radius: 14px;
+    padding: 20px 22px;
+  }
+
+  .paper-cite .cite-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    margin-bottom: 10px;
+  }
+
+  .paper-cite .cite-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    color: var(--cream);
+    line-height: 1.4;
+    margin-bottom: 8px;
+  }
+
+  .paper-cite .cite-authors {
+    font-size: 12px;
+    color: #9a8878;
+    font-weight: 300;
+  }
+
+  .paper-cite .cite-doi {
+    margin-top: 10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: #6a5a4a;
+  }
+
+  .stats-row {
+    position: relative; z-index: 2;
+    display: flex; gap: 24px;
+  }
+
+  .stat-item {
+    text-align: center;
+  }
+
+  .stat-item .num {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--gold);
+  }
+
+  .stat-item .lbl {
+    font-size: 10px;
+    color: #7a6a5a;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    margin-top: 2px;
+    font-weight: 300;
+  }
+
+  /* Right panel — form */
+  .login-right {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 40px;
+    background: var(--surface);
+  }
+
+  .login-form-wrap {
+    width: 100%;
+    max-width: 380px;
+    animation: fadeUp .5s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .form-heading {
+    margin-bottom: 36px;
+  }
+
+  .form-heading .eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    margin-bottom: 8px;
+  }
+
+  .form-heading h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 30px;
+    font-weight: 900;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+
+  .form-heading p {
+    margin-top: 8px;
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 300;
+  }
+
+  .field {
+    margin-bottom: 18px;
+  }
+
+  .field label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--slate);
+    margin-bottom: 7px;
+    letter-spacing: .02em;
+  }
+
+  .field input {
+    width: 100%;
+    padding: 13px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    background: #fff;
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+  }
+
+  .field input:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px #c9933a18;
+  }
+
+  .field input::placeholder { color: #bbb; }
+
+  .field-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 22px;
+    margin-top: -6px;
+  }
+
+  .field-row label {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12px; color: var(--muted); cursor: pointer;
+  }
+
+  .field-row a {
+    font-size: 12px; color: var(--gold); text-decoration: none;
+  }
+
+  .error-msg {
+    background: #fff1f0;
+    border: 1px solid #fca5a5;
+    color: var(--red);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    margin-bottom: 16px;
+    display: none;
+  }
+
+  .btn-login {
+    width: 100%;
+    padding: 14px;
+    background: var(--ink);
+    color: var(--cream);
+    border: none;
+    border-radius: 10px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: .03em;
+    transition: background .2s, transform .1s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-login:hover { background: #2d2010; }
+  .btn-login:active { transform: scale(.98); }
+
+  .btn-login .btn-shine {
+    position: absolute;
+    top: 0; left: -100%;
+    width: 60%; height: 100%;
+    background: linear-gradient(90deg, transparent, #ffffff18, transparent);
+    transition: left .4s;
+  }
+
+  .btn-login:hover .btn-shine { left: 140%; }
+
+  .demo-hint {
+    margin-top: 22px;
+    background: #fffbf2;
+    border: 1px solid #e8d8b0;
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+
+  .demo-hint .hint-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    margin-bottom: 8px;
+  }
+
+  .demo-accounts {
+    display: flex; flex-direction: column; gap: 6px;
+  }
+
+  .demo-acc {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 7px 10px;
+    background: #fff;
+    border-radius: 7px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: border-color .15s;
+  }
+
+  .demo-acc:hover { border-color: var(--gold); }
+
+  .demo-acc .acc-role {
+    font-size: 12px; font-weight: 500; color: var(--ink);
+  }
+
+  .demo-acc .acc-cred {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; color: var(--muted);
+  }
+
+  /* ═══════════════════════════
+     DASHBOARD PAGE
+  ═══════════════════════════ */
+  #dashboard-page {
+    flex-direction: column;
+    background: #f2ede3;
+  }
+
+  /* Top nav */
+  .topnav {
+    background: var(--ink);
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 62px;
+    position: sticky; top: 0; z-index: 100;
+  }
+
+  .nav-brand {
+    display: flex; align-items: center; gap: 12px;
+  }
+
+  .nav-logo {
+    width: 34px; height: 34px;
+    border: 1.5px solid var(--gold);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  .nav-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--cream);
+    font-weight: 700;
+  }
+
+  .nav-title span {
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  .nav-center {
+    display: flex; gap: 4px;
+  }
+
+  .nav-tab {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 400;
+    color: #8a7a6a;
+    cursor: pointer;
+    transition: all .2s;
+    border: none;
+    background: transparent;
+  }
+
+  .nav-tab:hover { color: var(--cream); background: #ffffff10; }
+  .nav-tab.active { color: var(--gold); background: #c9933a18; font-weight: 500; }
+
+  .nav-right {
+    display: flex; align-items: center; gap: 12px;
+  }
+
+  .user-chip {
+    display: flex; align-items: center; gap: 10px;
+    background: #ffffff0c;
+    border: 1px solid #ffffff14;
+    border-radius: 40px;
+    padding: 5px 14px 5px 5px;
+    cursor: pointer;
+  }
+
+  .user-avatar {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .user-name {
+    font-size: 13px;
+    color: var(--cream);
+    font-weight: 300;
+  }
+
+  .user-role-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    padding: 2px 7px;
+    border-radius: 20px;
+    font-weight: 500;
+    letter-spacing: .04em;
+  }
+
+  .btn-logout {
+    background: transparent;
+    border: 1px solid #ffffff20;
+    color: #9a8878;
+    border-radius: 8px;
+    padding: 7px 14px;
+    font-size: 12px;
+    font-family: 'Outfit', sans-serif;
+    cursor: pointer;
+    transition: all .2s;
+    letter-spacing: .02em;
+  }
+
+  .btn-logout:hover {
+    border-color: #c0392b44;
+    color: #e57373;
+    background: #c0392b14;
+  }
+
+  /* Main content area */
+  .dash-body {
+    flex: 1;
+    padding: 28px 32px 40px;
+    max-width: 1320px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  /* Welcome banner */
+  .welcome-banner {
+    background: var(--ink);
+    border-radius: 18px;
+    padding: 28px 32px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+    animation: fadeUp .4s ease both;
+  }
+
+  .welcome-banner::before {
+    content: '';
+    position: absolute;
+    right: -60px; top: -60px;
+    width: 260px; height: 260px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #c9933a18 0%, transparent 70%);
+  }
+
+  .welcome-text .greeting {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    margin-bottom: 6px;
+  }
+
+  .welcome-text h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    color: var(--cream);
+    font-weight: 700;
+  }
+
+  .welcome-text p {
+    font-size: 13px;
+    color: #7a6a5a;
+    margin-top: 6px;
+    font-weight: 300;
+  }
+
+  .paper-badge {
+    background: #ffffff0a;
+    border: 1px solid #ffffff14;
+    border-radius: 12px;
+    padding: 14px 20px;
+    text-align: right;
+    position: relative; z-index: 1;
+  }
+
+  .paper-badge .pb-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    margin-bottom: 4px;
+  }
+
+  .paper-badge .pb-title {
+    font-size: 12px;
+    color: var(--cream);
+    font-weight: 300;
+    max-width: 200px;
+    line-height: 1.4;
+  }
+
+  /* KPI cards */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 22px;
+    animation: fadeUp .4s .08s ease both;
+  }
+
+  .kpi-card {
+    background: var(--surface);
+    border-radius: 14px;
+    padding: 20px 22px;
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: 14px 14px 0 0;
+  }
+
+  .kpi-card.gold::before   { background: var(--gold); }
+  .kpi-card.rust::before   { background: var(--rust); }
+  .kpi-card.sage::before   { background: var(--sage); }
+  .kpi-card.slate::before  { background: var(--slate); }
+
+  .kpi-icon {
+    width: 36px; height: 36px;
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    margin-bottom: 14px;
+  }
+
+  .kpi-card.gold .kpi-icon  { background: #c9933a18; }
+  .kpi-card.rust .kpi-icon  { background: #8b3a1a18; }
+  .kpi-card.sage .kpi-icon  { background: #4a674118; }
+  .kpi-card.slate .kpi-icon { background: #3a4a5c18; }
+
+  .kpi-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 34px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .kpi-card.gold .kpi-num  { color: var(--gold); }
+  .kpi-card.rust .kpi-num  { color: var(--rust); }
+  .kpi-card.sage .kpi-num  { color: var(--sage); }
+  .kpi-card.slate .kpi-num { color: var(--slate); }
+
+  .kpi-label { font-size: 12px; color: var(--muted); font-weight: 400; }
+  .kpi-sub   { font-size: 11px; color: #bbb; margin-top: 8px; font-weight: 300; }
+
+  /* Main grid */
+  .main-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 18px;
+    animation: fadeUp .4s .14s ease both;
+  }
+
+  /* Table card */
+  .card {
+    background: var(--surface);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .card-header {
+    padding: 18px 22px 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .card-subtitle {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+    font-weight: 300;
+  }
+
+  .badge-small {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+
+  /* Student table */
+  .student-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .student-table th {
+    padding: 10px 16px;
+    text-align: left;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    background: #f8f4ec;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .student-table td {
+    padding: 13px 16px;
+    font-size: 13px;
+    color: var(--ink);
+    border-bottom: 1px solid #f0ead8;
+    vertical-align: middle;
+  }
+
+  .student-table tr:last-child td { border-bottom: none; }
+
+  .student-table tr:hover td { background: #fffbf4; }
+
+  .stu-avatar {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 600;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+
+  .prog-bar-wrap {
+    width: 80px;
+    height: 5px;
+    background: #e8e0d0;
+    border-radius: 10px;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .prog-bar-fill {
+    height: 100%;
+    border-radius: 10px;
+    background: var(--gold);
+  }
+
+  .status-pill {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  /* Right sidebar */
+  .sidebar { display: flex; flex-direction: column; gap: 14px; }
+
+  /* Pillars */
+  .pillar-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px;
+  }
+
+  .pillar-item + .pillar-item {
+    border-top: 1px solid var(--border);
+  }
+
+  .pillar-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    margin-top: 4px;
+    flex-shrink: 0;
+  }
+
+  .pillar-name {
+    font-size: 13px; font-weight: 500; color: var(--ink);
+    margin-bottom: 3px;
+  }
+
+  .pillar-desc {
+    font-size: 11px; color: var(--muted); font-weight: 300; line-height: 1.5;
+  }
+
+  /* Activity feed */
+  .activity-item {
+    display: flex;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid #f0ead8;
+    font-size: 12px;
+  }
+
+  .activity-item:last-child { border-bottom: none; }
+
+  .act-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    margin-top: 5px;
+    flex-shrink: 0;
+  }
+
+  .act-text { color: var(--ink); line-height: 1.4; }
+  .act-time { color: var(--muted); font-size: 11px; margin-top: 2px; font-weight: 300; }
+
+  /* ── Logout confirm overlay ── */
+  .overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(26,17,8,.7);
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(3px);
+  }
+
+  .overlay.show { display: flex; }
+
+  .confirm-box {
+    background: var(--surface);
+    border-radius: 20px;
+    padding: 36px;
+    max-width: 380px;
+    width: 90%;
+    text-align: center;
+    animation: fadeUp .25s ease;
+  }
+
+  .confirm-icon {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: #c0392b14;
+    border: 2px solid #c0392b30;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 18px;
+    font-size: 22px;
+  }
+
+  .confirm-box h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+
+  .confirm-box p {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 24px;
+    line-height: 1.5;
+    font-weight: 300;
+  }
+
+  .confirm-btns {
+    display: flex; gap: 10px;
+  }
+
+  .btn-cancel {
+    flex: 1;
+    padding: 12px;
+    background: transparent;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all .2s;
+  }
+
+  .btn-cancel:hover { border-color: var(--ink); color: var(--ink); }
+
+  .btn-confirm-logout {
+    flex: 1;
+    padding: 12px;
+    background: var(--red);
+    border: none;
+    border-radius: 10px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    transition: background .2s;
+  }
+
+  .btn-confirm-logout:hover { background: #a93226; }
+
+  /* Tab content panels */
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    #login-page { flex-direction: column; }
+    .login-left { width: 100%; min-height: 240px; }
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .main-grid { grid-template-columns: 1fr; }
+    .nav-center { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════
+     LOGIN PAGE
+═══════════════════════════════════ -->
+<div class="page active" id="login-page">
+
+  <!-- Left decorative panel -->
+  <div class="login-left">
+    <div class="brand-mark">
+      <div class="logo-symbol">EL</div>
+      <h1>Edu<em>Labor</em><br>Platform</h1>
+      <p>A digital management system supporting the joint development of Labor Education and Quality Education in higher institutions.</p>
+    </div>
+
+    <div class="paper-cite">
+      <div class="cite-label">Based on IEEE Paper</div>
+      <div class="cite-title">The Joint Development of College Labor Education and Quality Education Based on the New Era</div>
+      <div class="cite-authors">Shilin Meng, Fushou Tao, Lidan Han — Yunnan University of Finance and Economics</div>
+      <div class="cite-doi">DOI: 10.1109/CIPAE51077.2020.00021 · IEEE CIPAE 2020</div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-item">
+        <div class="num">3</div>
+        <div class="lbl">Countermeasures</div>
+      </div>
+      <div class="stat-item">
+        <div class="num">11</div>
+        <div class="lbl">References</div>
+      </div>
+      <div class="stat-item">
+        <div class="num">2</div>
+        <div class="lbl">Core Problems</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right form panel -->
+  <div class="login-right">
+    <div class="login-form-wrap">
+      <div class="form-heading">
+        <div class="eyebrow">Welcome back</div>
+        <h2>Sign in to your account</h2>
+        <p>Manage labor education programs, track student progress, and build campus culture.</p>
+      </div>
+
+      <div class="error-msg" id="error-msg">
+        Invalid email or password. Please try again.
+      </div>
+
+      <div class="field">
+        <label>Email address</label>
+        <input type="email" id="login-email" placeholder="you@university.edu" autocomplete="email">
+      </div>
+
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password">
+      </div>
+
+      <div class="field-row">
+        <label><input type="checkbox"> Remember me</label>
+        <a href="#">Forgot password?</a>
+      </div>
+
+      <button class="btn-login" onclick="doLogin()">
+        <div class="btn-shine"></div>
+        Sign In
+      </button>
+
+      <div class="demo-hint">
+        <div class="hint-title">Demo accounts — click to fill</div>
+        <div class="demo-accounts">
+          <div class="demo-acc" onclick="fillDemo('admin@yufe.edu','admin123')">
+            <span class="acc-role">Administrator</span>
+            <span class="acc-cred">admin@yufe.edu / admin123</span>
+          </div>
+          <div class="demo-acc" onclick="fillDemo('teacher@yufe.edu','teach123')">
+            <span class="acc-role">Teacher</span>
+            <span class="acc-cred">teacher@yufe.edu / teach123</span>
+          </div>
+          <div class="demo-acc" onclick="fillDemo('student@yufe.edu','stud123')">
+            <span class="acc-role">Student</span>
+            <span class="acc-cred">student@yufe.edu / stud123</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════
+     DASHBOARD PAGE
+═══════════════════════════════════ -->
+<div class="page" id="dashboard-page">
+
+  <!-- Top nav -->
+  <nav class="topnav">
+    <div class="nav-brand">
+      <div class="nav-logo">EL</div>
+      <div class="nav-title">Edu<span>Labor</span></div>
+    </div>
+
+    <div class="nav-center">
+      <button class="nav-tab active" onclick="switchTab('overview',this)">Overview</button>
+      <button class="nav-tab" onclick="switchTab('students',this)">Students</button>
+      <button class="nav-tab" onclick="switchTab('programs',this)">Programs</button>
+      <button class="nav-tab" onclick="switchTab('reports',this)">Reports</button>
+    </div>
+
+    <div class="nav-right">
+      <div class="user-chip">
+        <div class="user-avatar" id="nav-avatar" style="background:#c9933a22; color:#c9933a;">A</div>
+        <span class="user-name" id="nav-name">Administrator</span>
+        <span class="user-role-badge" id="nav-role" style="background:#c9933a18;color:#c9933a;">Admin</span>
+      </div>
+      <button class="btn-logout" onclick="showLogoutConfirm()">Sign out</button>
+    </div>
+  </nav>
+
+  <!-- Dashboard body -->
+  <div class="dash-body">
+
+    <!-- Welcome banner -->
+    <div class="welcome-banner">
+      <div class="welcome-text">
+        <div class="greeting">Good morning</div>
+        <h2 id="dash-welcome-name">Welcome back, Administrator</h2>
+        <p>Here's the current status of your Labor & Quality Education programs.</p>
+      </div>
+      <div class="paper-badge">
+        <div class="pb-label">IEEE CIPAE 2020</div>
+        <div class="pb-title">Labor &amp; Quality Education Joint Development Platform</div>
+      </div>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="kpi-grid">
+      <div class="kpi-card gold">
+        <div class="kpi-icon">📚</div>
+        <div class="kpi-num">847</div>
+        <div class="kpi-label">Total Students Enrolled</div>
+        <div class="kpi-sub">↑ 12% from last semester</div>
+      </div>
+      <div class="kpi-card rust">
+        <div class="kpi-icon">🏗</div>
+        <div class="kpi-num">14</div>
+        <div class="kpi-label">Active Labor Programs</div>
+        <div class="kpi-sub">3 starting this week</div>
+      </div>
+      <div class="kpi-card sage">
+        <div class="kpi-icon">✅</div>
+        <div class="kpi-num">92%</div>
+        <div class="kpi-label">Course Completion Rate</div>
+        <div class="kpi-sub">Target: 85% — exceeded</div>
+      </div>
+      <div class="kpi-card slate">
+        <div class="kpi-icon">🏆</div>
+        <div class="kpi-num">38</div>
+        <div class="kpi-label">Model Workers Recognized</div>
+        <div class="kpi-sub">This academic year</div>
+      </div>
+    </div>
+
+    <!-- Main content grid -->
+    <div class="main-grid">
+
+      <!-- Left: main panel with tabs -->
+      <div>
+
+        <!-- Overview tab -->
+        <div class="tab-panel active" id="tab-overview">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Recent Student Activity</div>
+                <div class="card-subtitle">Labor education participation across departments</div>
+              </div>
+              <span class="badge-small" style="background:#c9933a18;color:#c9933a;">This week</span>
+            </div>
+            <table class="student-table">
+              <thead>
+                <tr>
+                  <th>Student</th>
+                  <th>Department</th>
+                  <th>Program</th>
+                  <th>Progress</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="stu-avatar" style="background:#c9933a20;color:#c9933a;">LW</span>Li Wei</td>
+                  <td style="color:var(--muted)">Finance</td>
+                  <td>Self-service Labor</td>
+                  <td><div class="prog-bar-wrap"><div class="prog-bar-fill" style="width:88%;background:var(--gold)"></div></div> <span style="font-size:11px;color:var(--muted);margin-left:6px">88%</span></td>
+                  <td><span class="status-pill" style="background:#4a674118;color:#4a6741;">Active</span></td>
+                </tr>
+                <tr>
+                  <td><span class="stu-avatar" style="background:#4a674120;color:#4a6741;">ZM</span>Zhang Min</td>
+                  <td style="color:var(--muted)">Economics</td>
+                  <td>Public Welfare Labor</td>
+                  <td><div class="prog-bar-wrap"><div class="prog-bar-fill" style="width:72%;background:#4a6741"></div></div> <span style="font-size:11px;color:var(--muted);margin-left:6px">72%</span></td>
+                  <td><span class="status-pill" style="background:#4a674118;color:#4a6741;">Active</span></td>
+                </tr>
+                <tr>
+                  <td><span class="stu-avatar" style="background:#3a4a5c20;color:#3a4a5c;">CX</span>Chen Xin</td>
+                  <td style="color:var(--muted)">Management</td>
+                  <td>Vocational Skills</td>
+                  <td><div class="prog-bar-wrap"><div class="prog-bar-fill" style="width:100%;background:#3a4a5c"></div></div> <span style="font-size:11px;color:var(--muted);margin-left:6px">100%</span></td>
+                  <td><span class="status-pill" style="background:#3a4a5c18;color:#3a4a5c;">Completed</span></td>
+                </tr>
+                <tr>
+                  <td><span class="stu-avatar" style="background:#8b3a1a20;color:#8b3a1a;">WF</span>Wang Fang</td>
+                  <td style="color:var(--muted)">Accounting</td>
+                  <td>Social Practice</td>
+                  <td><div class="prog-bar-wrap"><div class="prog-bar-fill" style="width:45%;background:#8b3a1a"></div></div> <span style="font-size:11px;color:var(--muted);margin-left:6px">45%</span></td>
+                  <td><span class="status-pill" style="background:#c9933a18;color:#c9933a;">In Progress</span></td>
+                </tr>
+                <tr>
+                  <td><span class="stu-avatar" style="background:#c9933a20;color:#c9933a;">LY</span>Liu Yang</td>
+                  <td style="color:var(--muted)">Finance</td>
+                  <td>Entrepreneurship</td>
+                  <td><div class="prog-bar-wrap"><div class="prog-bar-fill" style="width:60%;background:var(--gold)"></div></div> <span style="font-size:11px;color:var(--muted);margin-left:6px">60%</span></td>
+                  <td><span class="status-pill" style="background:#4a674118;color:#4a6741;">Active</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Students tab -->
+        <div class="tab-panel" id="tab-students">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Student Registry</div>
+                <div class="card-subtitle">All enrolled students and their labor education status</div>
+              </div>
+              <span class="badge-small" style="background:#4a674118;color:#4a6741;">847 total</span>
+            </div>
+            <table class="student-table">
+              <thead>
+                <tr><th>Student</th><th>Year</th><th>Category</th><th>Labor Hours</th><th>Score</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><span class="stu-avatar" style="background:#c9933a20;color:#c9933a;">LW</span>Li Wei</td><td style="color:var(--muted)">Junior</td><td>Self-service</td><td>48 hrs</td><td style="color:#4a6741;font-weight:500">A</td></tr>
+                <tr><td><span class="stu-avatar" style="background:#4a674120;color:#4a6741;">ZM</span>Zhang Min</td><td style="color:var(--muted)">Senior</td><td>Public Welfare</td><td>62 hrs</td><td style="color:#4a6741;font-weight:500">A+</td></tr>
+                <tr><td><span class="stu-avatar" style="background:#3a4a5c20;color:#3a4a5c;">CX</span>Chen Xin</td><td style="color:var(--muted)">Freshman</td><td>Vocational</td><td>30 hrs</td><td style="color:#c9933a;font-weight:500">B+</td></tr>
+                <tr><td><span class="stu-avatar" style="background:#8b3a1a20;color:#8b3a1a;">WF</span>Wang Fang</td><td style="color:var(--muted)">Sophomore</td><td>Social Practice</td><td>21 hrs</td><td style="color:#c9933a;font-weight:500">B</td></tr>
+                <tr><td><span class="stu-avatar" style="background:#c9933a20;color:#c9933a;">LY</span>Liu Yang</td><td style="color:var(--muted)">Junior</td><td>Entrepreneurship</td><td>38 hrs</td><td style="color:#4a6741;font-weight:500">A</td></tr>
+                <tr><td><span class="stu-avatar" style="background:#4a674120;color:#4a6741;">SH</span>Sun Hua</td><td style="color:var(--muted)">Senior</td><td>Self-service</td><td>74 hrs</td><td style="color:#4a6741;font-weight:500">A+</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Programs tab -->
+        <div class="tab-panel" id="tab-programs">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Labor Education Programs</div>
+                <div class="card-subtitle">Based on paper's three countermeasures framework</div>
+              </div>
+            </div>
+            <table class="student-table">
+              <thead>
+                <tr><th>Program</th><th>Countermeasure</th><th>Enrolled</th><th>Completion</th><th>Status</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Labor Concept Training</td><td style="color:var(--muted)">Establish concept</td><td>210</td><td><div class="prog-bar-wrap"><div class="prog-bar-fill" style="width:85%;"></div></div></td><td><span class="status-pill" style="background:#4a674118;color:#4a6741;">Running</span></td></tr>
+                <tr><td>Vocational Skills Course</td><td style="color:var(--muted)">Improve curriculum</td><td>185</td><td><div class="prog-bar-wrap"><div class="prog-bar-fill" style="width:70%;"></div></div></td><td><span class="status-pill" style="background:#4a674118;color:#4a6741;">Running</span></td></tr>
+                <tr><td>Internship Practice</td><td style="color:var(--muted)">Improve curriculum</td><td>142</td><td><div class="prog-bar-wrap"><div class="prog-bar-fill" style="width:55%;"></div></div></td><td><span class="status-pill" style="background:#c9933a18;color:#c9933a;">Ongoing</span></td></tr>
+                <tr><td>Campus Culture Events</td><td style="color:var(--muted)">Campus culture</td><td>290</td><td><div class="prog-bar-wrap"><div class="prog-bar-fill" style="width:92%;"></div></div></td><td><span class="status-pill" style="background:#4a674118;color:#4a6741;">Running</span></td></tr>
+                <tr><td>Debate & Speech Contest</td><td style="color:var(--muted)">Campus culture</td><td>120</td><td><div class="prog-bar-wrap"><div class="prog-bar-fill" style="width:100%;background:#3a4a5c"></div></div></td><td><span class="status-pill" style="background:#3a4a5c18;color:#3a4a5c;">Completed</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Reports tab -->
+        <div class="tab-panel" id="tab-reports">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Semester Report</div>
+                <div class="card-subtitle">Labor education outcomes — Academic Year 2024–25</div>
+              </div>
+              <span class="badge-small" style="background:#3a4a5c18;color:#3a4a5c;">Auto-generated</span>
+            </div>
+            <div style="padding:24px 22px;">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px">
+                <div style="background:#f8f4ec;border-radius:12px;padding:18px">
+                  <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;font-family:'DM Mono',monospace">Problem 1 Resolution</div>
+                  <div style="font-family:'Playfair Display',serif;font-size:22px;color:var(--gold);font-weight:700">+34%</div>
+                  <div style="font-size:12px;color:var(--muted);margin-top:4px">Improvement in scientific management of labor education</div>
+                </div>
+                <div style="background:#f8f4ec;border-radius:12px;padding:18px">
+                  <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;font-family:'DM Mono',monospace">Problem 2 Resolution</div>
+                  <div style="font-family:'Playfair Display',serif;font-size:22px;color:var(--sage);font-weight:700">+51%</div>
+                  <div style="font-size:12px;color:var(--muted);margin-top:4px">Modern methods adopted in labor education delivery</div>
+                </div>
+              </div>
+              <div style="background:#f8f4ec;border-radius:12px;padding:18px">
+                <div style="font-size:12px;color:var(--muted);font-weight:300;line-height:1.7">
+                  <strong style="color:var(--ink);font-weight:500">Key Findings:</strong> This semester saw significant improvements across all three countermeasure areas identified in the paper. Establishing a correct labor concept among students showed the fastest adoption rate. The compulsory curriculum additions have resulted in 92% completion rates. Campus culture initiatives including speech and debate contests were completed with high student engagement, supporting the paper's recommendation that campus culture creates irreplaceable influence on students' world outlook.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right sidebar -->
+      <div class="sidebar">
+
+        <!-- Three Pillars card -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Three Countermeasures</div>
+              <div class="card-subtitle">From the IEEE paper</div>
+            </div>
+          </div>
+          <div>
+            <div class="pillar-item">
+              <div class="pillar-dot" style="background:var(--gold)"></div>
+              <div>
+                <div class="pillar-name">Establish Labor Concept</div>
+                <div class="pillar-desc">Cultivate correct labor views, attitudes and habits through planned education.</div>
+              </div>
+            </div>
+            <div class="pillar-item">
+              <div class="pillar-dot" style="background:var(--sage)"></div>
+              <div>
+                <div class="pillar-name">Improve Curriculum</div>
+                <div class="pillar-desc">Set labor education as a required course; ensure legislative status.</div>
+              </div>
+            </div>
+            <div class="pillar-item">
+              <div class="pillar-dot" style="background:var(--slate)"></div>
+              <div>
+                <div class="pillar-name">Strengthen Campus Culture</div>
+                <div class="pillar-desc">Organize events, contests, and self-service activities for students.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Activity feed -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Recent Activity</div>
+            </div>
+            <span class="badge-small" style="background:#f0ead8;color:#8a7a6a;">Live</span>
+          </div>
+          <div>
+            <div class="activity-item">
+              <div class="act-dot" style="background:var(--gold)"></div>
+              <div>
+                <div class="act-text">Chen Xin completed Vocational Skills module</div>
+                <div class="act-time">2 minutes ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="act-dot" style="background:var(--sage)"></div>
+              <div>
+                <div class="act-text">New student enrolled: Sun Hua — Finance dept.</div>
+                <div class="act-time">18 minutes ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="act-dot" style="background:var(--slate)"></div>
+              <div>
+                <div class="act-text">Debate Contest results published — 120 participants</div>
+                <div class="act-time">1 hour ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="act-dot" style="background:var(--rust)"></div>
+              <div>
+                <div class="act-text">Semester report auto-generated and ready</div>
+                <div class="act-time">3 hours ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="act-dot" style="background:var(--gold)"></div>
+              <div>
+                <div class="act-text">38 Model Workers recognized this academic year</div>
+                <div class="act-time">Yesterday</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Logout confirm overlay -->
+<div class="overlay" id="logout-overlay">
+  <div class="confirm-box">
+    <div class="confirm-icon">🚪</div>
+    <h3>Sign out?</h3>
+    <p>You'll be returned to the login screen. All unsaved changes will be lost.</p>
+    <div class="confirm-btns">
+      <button class="btn-cancel" onclick="hideLogoutConfirm()">Stay signed in</button>
+      <button class="btn-confirm-logout" onclick="doLogout()">Yes, sign out</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  const ACCOUNTS = {
+    'admin@yufe.edu':   { pass:'admin123', name:'Administrator', role:'Admin',   color:'#c9933a', initial:'A' },
+    'teacher@yufe.edu': { pass:'teach123', name:'Prof. Li Hua',  role:'Teacher', color:'#4a6741', initial:'L' },
+    'student@yufe.edu': { pass:'stud123',  name:'Zhang Wei',     role:'Student', color:'#3a4a5c', initial:'Z' },
+  };
+
+  let currentUser = null;
+
+  function fillDemo(email, pass) {
+    document.getElementById('login-email').value = email;
+    document.getElementById('login-password').value = pass;
+    document.getElementById('error-msg').style.display = 'none';
+  }
+
+  function doLogin() {
+    const email = document.getElementById('login-email').value.trim().toLowerCase();
+    const pass  = document.getElementById('login-password').value;
+    const err   = document.getElementById('error-msg');
+
+    const user = ACCOUNTS[email];
+    if (!user || user.pass !== pass) {
+      err.style.display = 'block';
+      return;
+    }
+
+    err.style.display = 'none';
+    currentUser = { ...user, email };
+
+    // Update dashboard UI
+    document.getElementById('nav-avatar').textContent = user.initial;
+    document.getElementById('nav-avatar').style.background = user.color + '22';
+    document.getElementById('nav-avatar').style.color = user.color;
+    document.getElementById('nav-name').textContent = user.name;
+    document.getElementById('nav-role').textContent = user.role;
+    document.getElementById('nav-role').style.background = user.color + '22';
+    document.getElementById('nav-role').style.color = user.color;
+    document.getElementById('dash-welcome-name').textContent = 'Welcome back, ' + user.name;
+
+    showPage('dashboard-page');
+  }
+
+  function showLogoutConfirm() {
+    document.getElementById('logout-overlay').classList.add('show');
+  }
+
+  function hideLogoutConfirm() {
+    document.getElementById('logout-overlay').classList.remove('show');
+  }
+
+  function doLogout() {
+    hideLogoutConfirm();
+    currentUser = null;
+    document.getElementById('login-email').value = '';
+    document.getElementById('login-password').value = '';
+    document.getElementById('error-msg').style.display = 'none';
+    showPage('login-page');
+    // reset tabs
+    switchTab('overview', document.querySelectorAll('.nav-tab')[0]);
+  }
+
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  function switchTab(name, btn) {
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+  }
+
+  // Enter key login
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && document.getElementById('login-page').classList.contains('active')) doLogin();
+    if (e.key === 'Escape') hideLogoutConfirm();
+  });
+</script>
+</body>
+</html>1
